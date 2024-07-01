@@ -2,11 +2,14 @@
   "name": "nil",
   "version": "1.0.0",
   "description": "",
-  "types": "./dist/index.d.ts",
   "files": [
     "dist",
     "README.md"
   ],
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "nil": "./dist/index.js"
+  },
   "scripts": {
     "dev": "npx ts-node src/index",
     "build": "tsup"
@@ -15,10 +18,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "inquirer": "^9.3.1",
+    "@inquirer/prompts": "^5.1.0",
+    "commander": "^12.1.0",
     "inquirer-file-tree-selection-prompt": "^2.0.5"
   },
   "devDependencies": {
+    "@types/node": "^20.14.9",
     "ts-node": "^10.9.2",
     "tsup": "^8.1.0",
     "typescript": "^5.5.2"
