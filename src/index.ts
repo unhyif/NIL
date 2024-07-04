@@ -1,5 +1,6 @@
+import { input, select } from '@inquirer/prompts';
+
 import { Command } from 'commander';
-import { input } from '@inquirer/prompts';
 import { version } from '../package.json';
 
 const program = new Command();
@@ -10,9 +11,27 @@ program.version(version);
 program
   .command('config')
   .description('Configure')
-  .action(async () => {
-    const answer = await input({ message: 'Enter anything' });
-    console.log(answer);
+  .option('-f, --file', 'Specify the file')
+  .option('-t, --title', 'Set the title prefix')
+  .action(async options => {
+    if (options.file) {
+      const answer = await select({
+        message: 'How would you like to specify the file you want to work on?',
+        choices: [
+          { name: 'Enter the absolute path of the file', value: 'path' },
+          {
+            name: 'Select a file from the current directory',
+            value: 'directory',
+          },
+        ],
+      });
+      console.log(answer);
+    } else if (options.title) {
+      const answer = await input({ message: 'Enter the title prefix:' });
+      console.log(answer);
+    } else {
+      console.log('No valid option selected');
+    }
   });
 
 program
