@@ -1,6 +1,8 @@
 import { input, select } from '@inquirer/prompts';
 
 import { Command } from 'commander';
+import fs from 'fs';
+import path from 'path';
 import { version } from '../package.json';
 
 const program = new Command();
@@ -25,7 +27,24 @@ program
           },
         ],
       });
-      console.log(answer);
+
+      if (answer === 'path') {
+        const pathAnswer = await input({
+          message: 'Enter the absolute path of the file:',
+          validate: input => path.isAbsolute(input) || 'Invalid path',
+        });
+        console.log(pathAnswer);
+      } else if (answer === 'directory') {
+        const files = fs.readdirSync(process.cwd()).map(file => ({
+          name: file,
+          value: path.resolve(process.cwd(), file),
+        }));
+        const fileAnswer = await select({
+          message: 'Select a file:',
+          choices: files,
+        });
+        console.log(fileAnswer);
+      }
     } else if (options.title) {
       const answer = await input({ message: 'Enter the title prefix:' });
       console.log(answer);
